@@ -26,13 +26,30 @@ class MobileNetApp {
         const exportHistoryBtn = document.getElementById('exportHistoryBtn');
         const dropZone = document.getElementById('dropZone');
         
-        uploadBtn?.addEventListener('click', () => imageInput?.click());
+        // Debug logging
+        console.log('Setting up event listeners...');
+        console.log('Upload button found:', !!uploadBtn);
+        console.log('Image input found:', !!imageInput);
         
-        imageInput?.addEventListener('change', (e) => {
-            if (e.target.files[0]) {
-                this.handleImageUpload(e.target.files[0]);
-            }
-        });
+        // Upload button click handler
+        if (uploadBtn && imageInput) {
+            uploadBtn.addEventListener('click', (e) => {
+                console.log('Upload button clicked');
+                e.preventDefault();
+                imageInput.click();
+            });
+        }
+        
+        // File input change handler
+        if (imageInput) {
+            imageInput.addEventListener('change', (e) => {
+                console.log('File input changed');
+                if (e.target.files && e.target.files[0]) {
+                    console.log('File selected:', e.target.files[0].name);
+                    this.handleImageUpload(e.target.files[0]);
+                }
+            });
+        }
         
         classifyBtn?.addEventListener('click', () => {
             this.classifyCurrentImage();
@@ -46,19 +63,26 @@ class MobileNetApp {
             this.exportHistory();
         });
         
-        dropZone?.addEventListener('drop', (e) => {
-            e.preventDefault();
-            dropZone.classList.remove('drag-over');
+        // Drop zone event handlers
+        if (dropZone) {
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('drag-over');
+                
+                const files = e.dataTransfer.files;
+                if (files && files[0]) {
+                    console.log('File dropped:', files[0].name);
+                    this.handleImageUpload(files[0]);
+                }
+            });
             
-            const files = e.dataTransfer.files;
-            if (files[0]) {
-                this.handleImageUpload(files[0]);
-            }
-        });
-        
-        dropZone?.addEventListener('click', () => {
-            imageInput?.click();
-        });
+            dropZone.addEventListener('click', (e) => {
+                console.log('Drop zone clicked');
+                if (imageInput && e.target.closest('.drop-zone')) {
+                    imageInput.click();
+                }
+            });
+        }
     }
     
     async preloadModel() {
@@ -72,12 +96,17 @@ class MobileNetApp {
     
     async handleImageUpload(file) {
         try {
+            console.log('Handling image upload:', file.name, file.type, file.size);
             this.currentFile = file;
             
             this.classifier.imageProcessor.validateImage(file);
+            console.log('Image validation passed');
+            
             const preview = await this.classifier.imageProcessor.createPreviewData(file);
+            console.log('Preview data created');
             
             this.ui.showImagePreview(preview);
+            console.log('Image preview shown');
         } catch (error) {
             console.error('Image upload failed:', error);
             this.ui.showError(error.message);
