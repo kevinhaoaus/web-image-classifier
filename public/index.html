@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MobileNet Image Classifier</title>
+    
+    <!-- PWA Configuration -->
+    <meta name="theme-color" content="#4285f4">
+    <meta name="description" content="AI-powered image classification using MobileNet">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icons/favicon.ico">
+    
+    <!-- Preload TensorFlow.js for better performance -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.10.0/dist/tf.min.js" as="script">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@2.1.0/dist/mobilenet.min.js" as="script">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="src/styles/main.css">
+    <link rel="stylesheet" href="src/styles/components.css">
+    <link rel="stylesheet" href="src/styles/animations.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <h1>🤖 MobileNet Classifier</h1>
+            <div class="model-status" id="modelStatus">
+                <span class="status-indicator loading"></span>
+                <span class="status-text">Loading AI Model...</span>
+            </div>
+        </header>
+        
+        <main class="main-content">
+            <!-- Upload Section -->
+            <section class="upload-section">
+                <div class="upload-card">
+                    <div class="drop-zone" id="dropZone">
+                        <input type="file" id="imageInput" accept="image/*" style="display: none;">
+                        <div class="drop-zone-content">
+                            <div class="upload-icon">📸</div>
+                            <h3>Upload an Image</h3>
+                            <p>Drop an image here or click to browse</p>
+                            <button class="upload-btn" id="uploadBtn">Choose Image</button>
+                        </div>
+                    </div>
+                    
+                    <div class="image-preview" id="imagePreview" style="display: none;">
+                        <div class="preview-container">
+                            <img id="previewImg" alt="Uploaded image">
+                            <div class="image-info" id="imageInfo"></div>
+                        </div>
+                        <div class="preview-actions">
+                            <button class="classify-btn" id="classifyBtn">🔍 Classify Image</button>
+                            <button class="reset-btn" id="resetBtn">🔄 Upload New</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Results Section -->
+            <section class="results-section" id="resultsSection" style="display: none;">
+                <div class="results-card">
+                    <h2>Classification Results</h2>
+                    <div class="results-grid">
+                        <div class="predictions-list" id="predictionsList"></div>
+                        <div class="confidence-chart" id="confidenceChart"></div>
+                    </div>
+                    <div class="inference-stats" id="inferenceStats"></div>
+                </div>
+            </section>
+            
+            <!-- History Section -->
+            <section class="history-section">
+                <div class="history-header">
+                    <h2>Classification History</h2>
+                    <div class="history-controls">
+                        <button class="btn-secondary" id="exportHistoryBtn">📁 Export</button>
+                        <button class="btn-danger" id="clearHistoryBtn">🗑️ Clear All</button>
+                    </div>
+                </div>
+                <div class="history-grid" id="historyGrid">
+                    <!-- History items will be populated here -->
+                </div>
+            </section>
+        </main>
+        
+        <!-- Loading Overlay -->
+        <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+            <div class="loading-spinner"></div>
+            <div class="loading-content">
+                <h3 id="loadingTitle">Processing Image</h3>
+                <p id="loadingMessage">Please wait while we classify your image...</p>
+                <div class="loading-progress" id="loadingProgress"></div>
+            </div>
+        </div>
+        
+        <!-- Error Toast -->
+        <div class="error-toast" id="errorToast" style="display: none;">
+            <div class="error-content">
+                <span class="error-icon">⚠️</span>
+                <span class="error-message" id="errorMessage"></span>
+                <button class="error-close" id="errorClose">×</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- TensorFlow.js and MobileNet -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.10.0/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@2.1.0/dist/mobilenet.min.js"></script>
+    
+    <!-- Application Scripts -->
+    <script src="src/scripts/constants.js"></script>
+    <script src="src/scripts/storage.js"></script>
+    <script src="src/scripts/imageProcessor.js"></script>
+    <script src="src/scripts/modelManager.js"></script>
+    <script src="src/scripts/classifier.js"></script>
+    <script src="src/scripts/ui.js"></script>
+    <script src="src/scripts/app.js"></script>
+    
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => console.log('SW registered:', registration))
+                    .catch(error => console.log('SW registration failed:', error));
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+{
+    "name": "mobilenet-image-classifier",
+    "version": "1.0.0",
+    "description": "Client-side image classification using MobileNet and TensorFlow.js",
+    "scripts": {
+        "dev": "vercel dev",
+        "build": "echo 'Static site - no build needed'",
+        "deploy": "vercel --prod",
+        "preview": "vercel",
+        "serve": "python -m http.server 8000"
+    },
+    "devDependencies": {
+        "vercel": "^32.0.0"
+    },
+    "keywords": ["machine-learning", "tensorflow", "image-classification", "pwa"],
+    "author": "Your Name",
+    "license": "MIT"
+}

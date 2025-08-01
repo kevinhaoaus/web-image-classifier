@@ -1,0 +1,35 @@
+{
+    "name": "MobileNet Image Classifier",
+    "short_name": "ML Classifier",
+    "description": "AI-powered image classification using MobileNet and TensorFlow.js",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#4285f4",
+    "orientation": "portrait-primary",
+    "scope": "/",
+    "lang": "en",
+    "icons": [
+        {
+            "src": "icons/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "icons/icon-512.png",
+            "sizes": "512x512", 
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ],
+    "categories": ["utilities", "productivity", "education"],
+    "shortcuts": [
+        {
+            "name": "Classify Image",
+            "short_name": "Classify",
+            "description": "Upload and classify an image",
+            "url": "/?action=classify"
+        }
+    ]
+}
